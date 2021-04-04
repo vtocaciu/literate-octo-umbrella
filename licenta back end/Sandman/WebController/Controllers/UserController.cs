@@ -1,38 +1,53 @@
-﻿using Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Models;
+using Service;
+using ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Service;
+using System.Threading.Tasks;
 
 namespace WebController.Controllers
 {
-    public class UserController : ApiController
+    
+    [ApiController]
+    public class UserController : ControllerBase
     {
-        [HttpGet]
+        private IUserService _userService;
+
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet("user/all")]
         public IEnumerable<User> GetAllUsers()
         {
-            return new UserService().GetAll();
+            return _userService.GetAll();
         }
 
-        [HttpPost]
+        [HttpPost("user/add")]
         public void AddUser(User user)
         {
-            new UserService().Add(user);
+            _userService.Add(user);
         }
 
-        [HttpPut]
+        [HttpPut("user/update")]
         public void UpdateUser(User user)
         {
-            new UserService().Update(user);
+            _userService.Update(user);
         }
 
-        [HttpDelete]
-        public void DeleteUser(Guid userId)
+        [HttpDelete("user/delete")]
+        public void DeleteUser([FromBody] User user)
         {
-            new UserService().Delete(userId);
+            _userService.Delete(user.ID);
+        }
+
+        [HttpGet("user/getById")]
+        public User GetUserByUid([FromBody] User user)
+        {
+            return _userService.GetById(user.ID);
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Models;
 using Repository;
+using ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Service
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private UserRepository _userRepository;
 
@@ -28,7 +29,7 @@ namespace Service
 
         public void Delete(Guid userId)
         {
-           _userRepository.Delete(userId);
+            _userRepository.Delete(userId);
         }
 
         public List<User> GetAll()

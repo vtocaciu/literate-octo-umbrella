@@ -2,17 +2,16 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace Repository
 {
-    public class UserRepository: BaseRepository<User>
+    public class UserRepository : BaseRepository<User>
     {
-        private const string SELECT_STMT = "SELECT* FROM users";
+        private const string SELECT_STMT = "SELECT * FROM users";
         private const string INSERT_STMT = "INSERT INTO users values (@id, @username, @email, @firstname, @lastname, @password, @dateofbirth)";
         private const string UPDATE_STMT = "UPDATE users SET username=@username, email=@email, firstname=@firstname, lastname=@lastname, password=@password, dateofbirth=@dateofbirth where userid=@id ";
         private const string DELETE_STMT = "DELETE FROM users WHERE userid=@id";
+        private const string GET_BY_ID_STMT = "SELECT * FROM users WHERE userid=@id";
 
         public override void Add(User user)
         {
@@ -87,7 +86,26 @@ namespace Repository
         public override User GetById(Guid userId)
         {
             User user = null;
-           
+            using (var connection = new NpgsqlConnection(CONNECTION_STRING))
+            {
+                connection.Open();
+                NpgsqlCommand pgcom = new NpgsqlCommand(GET_BY_ID_STMT, connection);
+                pgcom.Parameters.AddWithValue("@id", userId);
+                NpgsqlDataReader pgreader = pgcom.ExecuteReader();
+                pgreader.Read();
+                user = new User()
+                {
+                    ID = pgreader.GetGuid(0),
+                    Username = pgreader.GetString(1),
+                    Email = pgreader.GetString(2),
+                    FirstName = pgreader.GetString(3),
+                    LastName = pgreader.GetString(4),
+                    Password = pgreader.GetString(5),
+                    DateOfBirth = pgreader.GetDateTime(6)
+                };
+
+
+            }
             return user;
         }
     }

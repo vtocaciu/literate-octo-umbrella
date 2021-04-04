@@ -11,7 +11,7 @@ export interface IMyButton {
 export default function MyButton(props: IMyButton): JSX.Element {
 
     return (
-        <View>
+        <>
             <TouchableOpacity
                 style={props.buttonStyle}
                 onPress={props.onClick}>
@@ -19,6 +19,6 @@ export default function MyButton(props: IMyButton): JSX.Element {
                     {props.text}
                 </Text>
             </TouchableOpacity>
-        </View>
+        </>
     );
 }
