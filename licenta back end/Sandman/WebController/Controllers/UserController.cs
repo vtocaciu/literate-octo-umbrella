@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
-using Service;
 using ServiceInterfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebController.Controllers
 {
-    
+
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -49,5 +45,7 @@ namespace WebController.Controllers
         {
             return _userService.GetById(user.ID);
         }
+
+       
     }
 }

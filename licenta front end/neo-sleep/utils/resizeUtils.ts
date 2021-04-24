@@ -9,8 +9,7 @@ const {
 
 
 export const normalizeFontSize = (size: number): number => {
-  console.log(SCREEN_WIDTH);
-  console.log(SCREEN_HEIGHT);
+  
   return Math.round(size / PixelRatio.getFontScale());
 }
 
