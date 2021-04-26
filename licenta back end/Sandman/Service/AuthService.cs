@@ -27,7 +27,8 @@ namespace Service
         {
 
             User user = _userRepository.GetAll().SingleOrDefault(us => us.Username == model.Username && us.Password == model.Password);
-            
+            if (user == null) return null;
+
             var token = generateJwtToken(user);
 
             return new AuthResponse(user, token);
@@ -39,7 +40,7 @@ namespace Service
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.ID.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.ID.ToString()), new Claim("username", user.Username.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

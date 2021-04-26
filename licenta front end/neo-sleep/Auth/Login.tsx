@@ -3,6 +3,9 @@ import React from 'react';
 import MyButton from "../Controls/MyButton";
 import { useFonts } from "expo-font";
 import { normalizeFontSize, normalizeHeight } from "../utils/resizeUtils";
+import { sendDate } from "../App";
+
+
 
 //logo color 4D1E5B
 export default function Login({navigation}: any): JSX.Element {
@@ -14,12 +17,20 @@ export default function Login({navigation}: any): JSX.Element {
         'ModernSansLight': require('../assets/fonts/ModernSansLight.ttf'),
       });
 
+    const onButtonClick = (): void => {
+        sendDate(username, password, navigation)
+    }
+    
     const onClick = (event: GestureResponderEvent): void => {
         /*navigation.reset({
             index: 0,
             routes: [{name: 'Bottom'}]
         })*/
-        navigation.navigate('Bottom');
+        
+
+        fetch('https://sandman-heroku.herokuapp.com/user/all').then(undata => undata.json().then(data => console.log(data)));
+        if (username==="username3" && password==="parola2")
+            navigation.navigate('Bottom');
     }
 
     return !fontsLoaded ? <View><Text>Loading..</Text></View> :(

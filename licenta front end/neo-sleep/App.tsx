@@ -12,6 +12,23 @@ import Profile from './SleepApp/Profile';
 const Stack = createStackNavigator();
 const Bottom = createBottomTabNavigator();
 
+export const sendDate = (username: string, password: string, navigation: any) => {
+    fetch('https://localhost:49153/authenticate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 'username': username, 'password': password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        navigation.navigate('Bottom');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 const BottomTabs = () => {
     return (
         <Bottom.Navigator screenOptions={({ route }: any) => ({

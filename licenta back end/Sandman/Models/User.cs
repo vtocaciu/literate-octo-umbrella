@@ -11,7 +11,7 @@ namespace Models
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public Guid ID { get; set; }
-        [JsonIgnore]
+        
         public string Password { get; set; }
         public User() { }
         public User(string username, string firstName, string lastName, DateTime dateOfBirth, string email, string password)
