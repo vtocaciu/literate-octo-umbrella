@@ -16,14 +16,13 @@ namespace WebController.Controllers
             _authController = authController;
         }
 
-        [Authorize]
-        [HttpGet("user/getallauth")]
-        public IEnumerable<User> GetAllUsersAuth()
+        [HttpPost("auth/add")]
+        public void AddUser(User user)
         {
-            return new UserService().GetAll();
+            _authController.AddUser(user);
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost("auth/login")]
         public IActionResult Authenticate(AuthRequest model)
         {
             var response = _authController.Authenticate(model);

@@ -2,6 +2,7 @@
 using Models;
 using ServiceInterfaces;
 using System.Collections.Generic;
+using WebController.Helpers;
 
 namespace WebController.Controllers
 {
@@ -22,12 +23,7 @@ namespace WebController.Controllers
             return _userService.GetAll();
         }
 
-        [HttpPost("user/add")]
-        public void AddUser(User user)
-        {
-            _userService.Add(user);
-        }
-
+        [Authorize]
         [HttpPut("user/update")]
         public void UpdateUser(User user)
         {
@@ -40,6 +36,7 @@ namespace WebController.Controllers
             _userService.Delete(user.ID);
         }
 
+        [Authorize]
         [HttpGet("user/getById")]
         public User GetUserByUid([FromBody] User user)
         {

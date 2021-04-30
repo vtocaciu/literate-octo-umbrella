@@ -1,11 +1,12 @@
 ﻿using Models;
 using Repository;
+using ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 
 namespace Service
 {
-    public class SleepDataService
+    public class SleepDataService : ISleepDataService
     {
         private SleepDataRepository _sleepDataRepository;
 
@@ -38,6 +39,19 @@ namespace Service
         public SleepData GetById(Guid sleepDataId)
         {
             return _sleepDataRepository.GetById(sleepDataId);
+        }
+
+        public void AddList(SleepData[] sleepDatas)
+        {
+            foreach(SleepData sleepData in sleepDatas)
+            {
+                Add(sleepData);
+            }
+        }
+
+        public IEnumerable<SleepData> GetAllByUserId(Guid iD)
+        {
+            return _sleepDataRepository.GetAll().FindAll(sleep => sleep.UserID == iD);
         }
     }
 }

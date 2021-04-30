@@ -3,8 +3,8 @@ import React from 'react';
 import MyButton from "../Controls/MyButton";
 import { useFonts } from "expo-font";
 import { normalizeFontSize, normalizeHeight } from "../utils/resizeUtils";
-import { sendDate } from "../App";
-
+import { login } from "../Services/UserService";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 //logo color 4D1E5B
@@ -17,25 +17,33 @@ export default function Login({navigation}: any): JSX.Element {
         'ModernSansLight': require('../assets/fonts/ModernSansLight.ttf'),
       });
 
-    const onButtonClick = (): void => {
-        sendDate(username, password, navigation)
-    }
-    
+   
     const onClick = (event: GestureResponderEvent): void => {
         /*navigation.reset({
             index: 0,
             routes: [{name: 'Bottom'}]
         })*/
         
-
-        fetch('https://sandman-heroku.herokuapp.com/user/all').then(undata => undata.json().then(data => console.log(data)));
-        if (username==="username3" && password==="parola2")
-            navigation.navigate('Bottom');
+        login(username, password)
+            .then((data: any) => {
+                console.log(data);
+                navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Bottom'}]
+                })
+            })
+            .catch((error) => alert(error)); 
+            
     }
 
-    return !fontsLoaded ? <View><Text>Loading..</Text></View> :(
-        <View style={styles.container}>
-            <View style={styles.box}>
+    return !fontsLoaded ? <View><Text>Loading..</Text></View> : (
+        <KeyboardAwareScrollView
+            style={{ backgroundColor: 'rgba(60, 219, 211, 0.5)' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.container}
+        scrollEnabled={false}
+    >
+        <View style={styles.box}>
                 <Image source={require('../Icons/logo.png')} style={styles.imageStyle} />
                 <Text style={styles.textDecoration}>Username</Text>
                 <TextInput
@@ -54,8 +62,9 @@ export default function Login({navigation}: any): JSX.Element {
                 />
                 <MyButton buttonStyle={styles.button} textStyle={styles.buttonText} text="login" onClick={onClick} />
                 <Text style={styles.signUpStyle}>Don't have an account? {'\n'} Click here to sign up!</Text>
-            </View>
+            
         </View>
+        </KeyboardAwareScrollView >
     );
 }
 

@@ -22,6 +22,11 @@ namespace Service
             _userRepository = new UserRepository();
         }
 
+        public void AddUser(User user)
+        {
+            user.ID = Guid.NewGuid();
+            _userRepository.Add(user);
+        }
 
         public AuthResponse Authenticate(AuthRequest model)
         {
