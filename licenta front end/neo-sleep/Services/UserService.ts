@@ -1,7 +1,9 @@
 //chain of responsability
+export const URL = "https://sandman-heroku.herokuapp.com";
+
 export const login = (username: string, password: string) => {
   return new Promise((resolve, reject) => {
-    fetch('https://sandman-heroku.herokuapp.com/authenticate', {
+    fetch(`${URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -4,6 +4,7 @@ import MyButton from "../Controls/MyButton";
 import { BaseSleep, SleepIterator } from "../Models/Sleep";
 import { SleepService } from "../Services/SleepService";
 import { normalizeFontSize } from "../utils/resizeUtils";
+import { retrieveData } from "../Services/Storage";
 
 const sleepService: SleepService = SleepService.initSleepService();
 const sleepIterator: SleepIterator = new SleepIterator(sleepService.getSleepData());
@@ -21,6 +22,8 @@ export default function History(): JSX.Element {
         setSleep(sleepIterator.getCurrent());
         hasNext(sleepIterator.hasNext());
         hasPrev(sleepIterator.hasPrevious());
+
+        retrieveData("token").then((data) => console.log("hehe", data));
     },[sleepIterator])
 
 
