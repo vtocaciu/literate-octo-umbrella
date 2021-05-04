@@ -1,9 +1,10 @@
-//chain of responsability
-export const URL = "https://sandman-heroku.herokuapp.com";
+import jwtDecode from "jwt-decode";
+import { User } from "../Models/User";
+import { URL_APP } from "../utils/consts";
 
 export const login = (username: string, password: string) => {
   return new Promise((resolve, reject) => {
-    fetch(`${URL}/auth/login`, {
+    fetch(`${URL_APP}/auth/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -22,6 +23,33 @@ export const login = (username: string, password: string) => {
       .catch((error) => reject(error))
     )
       .catch((error) => reject("Invalid username and password"));
+  });
+
+}
+
+export const getuserbyid = (token: string): Promise<any> => {
+  const decoded_data: any = jwtDecode(token);
+  return new Promise((resolve, reject) => {
+    fetch(`${URL_APP}/user/getById`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ id: decoded_data.id })
+    }).then((data) =>
+      data.json()
+        .then(processedData => {
+          
+          if (processedData.status === 400)
+            reject("Invalid id")
+          
+          resolve(new User(processedData.id, processedData.username, processedData.firstName, processedData.lastName, new Date(processedData.dateOfBirth), processedData.email));
+        })
+      .catch((error) => reject(error))
+    )
+      .catch((error) => reject(error));
   });
 
 }

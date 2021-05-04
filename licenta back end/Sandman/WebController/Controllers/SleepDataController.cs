@@ -26,7 +26,7 @@ namespace WebController.Controllers
         }
 
         [Authorize]
-        [HttpGet("sleepdata/getbyuserid")]
+        [HttpPost("sleepdata/getbyuserid")]
         public IEnumerable<SleepData> GetAllSleepDataByUserId(User user)
         {
             return _sleepDataService.GetAllByUserId(user.ID);

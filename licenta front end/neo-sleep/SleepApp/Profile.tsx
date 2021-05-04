@@ -4,18 +4,29 @@ import { User } from "../Models/User";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MyButton from "../Controls/MyButton";
 import { normalizeFontSize } from "../utils/resizeUtils";
+import { retrieveData } from "../Services/Storage";
+import { getuserbyid } from "../Services/UserService";
+import { useIsFocused } from "@react-navigation/native";
+import { formatDate } from "../utils/consts";
 
-const initUser: User = { ID: "", username: "ionp", firstName: "Valeria", lastName: "Tocaciu", email: "valeria.tocaciu", dateOfBirth: new Date() };
+const initUser: User = { ID: "", username: "", firstName: "", lastName: "", email: "", dateOfBirth: new Date() };
 
 const size: number = normalizeFontSize(25);
 const color: string = "#4D1E5B"
 export default function Profile(props: any): JSX.Element {
 
-    const formatDate = (date: Date): string => {
-        return date.getDate().toString() + "/" + (date.getMonth() + 1).toString()  + "/" + date.getFullYear().toString()
-    }
+    const isFocused = useIsFocused();
 
     const [user, setUser] = React.useState<User>(initUser);
+
+    React.useEffect(() => {
+        retrieveData("token").then((data) => {
+            getuserbyid(data)
+                .then((user) => setUser(user))
+                .catch((error) => alert(error));
+        })
+    }, [isFocused])
+
     return (
         <View style={styles.container}>
             <Image source={require('../Icons/profileIcon.png')} style={styles.imageStyle} />
@@ -27,16 +38,16 @@ export default function Profile(props: any): JSX.Element {
                 </View>
                 <View style={styles.row}>
                     <Ionicons name={"mail-open-outline"} size={size} color={color} />
-                    <Text style={styles.textDecoration}>{"valeria.tocaciu@gmail.com"}</Text>
+                    <Text style={styles.textDecoration}>{user.email}</Text>
                 </View>
                 <View style={styles.row}>
                     <Ionicons name={"calendar-outline"} size={size} color={color} />
                     <Text style={styles.textDecoration}>{formatDate(user.dateOfBirth)}</Text>
                 </View>
-                <View style={styles.row}>
+                {/* <View style={styles.row}>
                     <Ionicons name={"bed-outline"} size={size} color={color} />
                     <Text style={styles.textDecoration}>naps taken: {350}</Text>
-                </View>
+                </View> */}
                 <MyButton buttonStyle={styles.button} textStyle={styles.buttonText} text="update info" onClick={() => { }} />
             </View>
         </View>
@@ -79,7 +90,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderColor: '#fff',
         backgroundColor: 'rgba(255,255,255,0.5)',
-        height: 250
+        height: 225 //250
     },
     row: {
         display: 'flex',

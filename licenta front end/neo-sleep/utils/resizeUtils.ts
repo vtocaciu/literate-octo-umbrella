@@ -7,6 +7,13 @@ const {
   height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
 
+export const getWidth = (): number => {
+  return SCREEN_WIDTH;
+}
+
+export const getHeight = (): number => {
+  return SCREEN_HEIGHT;
+}
 
 export const normalizeFontSize = (size: number): number => {
   

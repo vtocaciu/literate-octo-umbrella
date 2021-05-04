@@ -8,6 +8,7 @@ import History from './SleepApp/History';
 import SyncData from './SleepApp/SyncData';
 import Stats from './SleepApp/Stats';
 import Profile from './SleepApp/Profile';
+import SleepDiary from './SleepApp/SleepDiary';
 
 const Stack = createStackNavigator();
 const Bottom = createBottomTabNavigator();
@@ -26,8 +27,11 @@ const BottomTabs = () => {
                 else if (route.name === 'Statistics') {
                     iconName = 'stats-chart';
                 }
-                else if (route.name === 'My profile') {
+                else if (route.name === 'My Profile') {
                     iconName = 'person-circle';
+                }
+                else if (route.name === 'Sleep Diary') {
+                    iconName = 'journal-sharp';
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -42,7 +46,8 @@ const BottomTabs = () => {
             <Bottom.Screen name="Sync" component={SyncData} />
             <Bottom.Screen name="History" component={History} />
             <Bottom.Screen name="Statistics" component={Stats} />
-            <Bottom.Screen name="My profile" component={Profile} />
+            <Bottom.Screen name="Sleep Diary" component={SleepDiary} />
+            <Bottom.Screen name="My Profile" component={Profile} />
 
         </Bottom.Navigator>
     )

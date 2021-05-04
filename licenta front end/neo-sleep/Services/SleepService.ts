@@ -1,31 +1,55 @@
-import { BaseSleep, GeneratedSleep, Sleep } from "../Models/Sleep";
+import jwtDecode from "jwt-decode";
+import { BaseSleep, Sleep } from "../Models/Sleep";
+import { URL_APP } from "../utils/consts";
+import { retrieveData } from "./Storage";
 
 //singleton pattern
 export class SleepService {
   private static __sleepService: SleepService;
-  private userUid: string;
+  private token: string;
 
   private constructor() {
-    this.userUid = "5e9f357d-d41f-4ff3-bc3c-dd610174e7c4";
+    this.token = "";
+    retrieveData("token").then(data => this.token = data).catch(() => {});
   }
 
   static initSleepService(): SleepService {
-    if (SleepService.__sleepService == null)
+    if (SleepService.__sleepService == null) {
       SleepService.__sleepService = new SleepService();
+    }
     return SleepService.__sleepService;
   }
 
 
-  public getSleepData(): BaseSleep[]{
-    return [
-      new Sleep("1", this.userUid, 15, 80, new Date(), new Date, 15, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new Sleep("2", this.userUid, 20, 71, new Date(), new Date, 16, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new Sleep("3", this.userUid, 58, 90, new Date(), new Date, 17,  7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new Sleep("4", this.userUid, 36, 60, new Date(), new Date, 18, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new Sleep("5", this.userUid, 47, 82, new Date(), new Date, 19,  7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new Sleep("6", this.userUid, 51, 84, new Date(), new Date, 20, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-      new GeneratedSleep("7", this.userUid, 254, 41, 15, 25),
-      new BaseSleep("7", this.userUid, 122, 12)
-    ]
+  public getSleepData(): Promise<Sleep[]>{
+    const decoded_data: any = jwtDecode(this.token);
+    return new Promise((resolve, reject) => {
+      fetch(`${URL_APP}/sleepdata/getbyuserid`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.token
+        },
+        body: JSON.stringify({ id: decoded_data.id })
+      }).then((data) =>
+        data.json()
+          .then(processedData => {
+            if (processedData.status === 400)
+              reject("Invalid data")
+            
+            const sleepArray: Sleep[] = []
+            processedData.forEach((element: any) => {
+              sleepArray.push(Sleep.getSleepFromRequest(element));
+              
+            });
+            
+            resolve(sleepArray);
+          })
+        .catch((error) => reject(error))
+      )
+        .catch((error) => reject(error));
+    });
+  
   }
 }

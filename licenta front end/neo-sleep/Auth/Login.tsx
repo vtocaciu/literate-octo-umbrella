@@ -30,6 +30,7 @@ export default function Login({ navigation }: any): JSX.Element {
             .then((data: any) => {
                 storeData("token", data.token)
                     .then(() => {
+                        
                         setShowLoading(false);
                         navigation.reset({
                             index: 0,

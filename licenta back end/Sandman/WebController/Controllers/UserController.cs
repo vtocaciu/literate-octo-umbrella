@@ -37,7 +37,7 @@ namespace WebController.Controllers
         }
 
         [Authorize]
-        [HttpGet("user/getById")]
+        [HttpPost("user/getById")]
         public User GetUserByUid([FromBody] User user)
         {
             return _userService.GetById(user.ID);
