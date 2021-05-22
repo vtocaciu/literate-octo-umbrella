@@ -80,7 +80,6 @@ namespace Repository
                     });
                 }
             }
-            //allUsers.Add(new User() { ID = Guid.NewGuid(), Username = "username", Email = "email", FirstName = "firstname", LastName = "lastname", Password = "parola", DateOfBirth = new DateTime() });
             return allUsers;
         }
 

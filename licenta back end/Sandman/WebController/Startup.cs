@@ -34,6 +34,7 @@ namespace WebController
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISleepDataService, SleepDataService>();
+            services.AddScoped<ISleepDiaryService, SleepDiaryService>();
             services.AddControllers().AddNewtonsoftJson();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

@@ -8,7 +8,8 @@ import History from './SleepApp/History';
 import SyncData from './SleepApp/SyncData';
 import Stats from './SleepApp/Stats';
 import Profile from './SleepApp/Profile';
-import SleepDiary from './SleepApp/SleepDiary';
+import Auth from './Auth/Auth';
+import SleepDiaryScreen from './SleepApp/SleepDiary';
 
 const Stack = createStackNavigator();
 const Bottom = createBottomTabNavigator();
@@ -43,10 +44,10 @@ const BottomTabs = () => {
             }}
             initialRouteName="History"
         >
-            <Bottom.Screen name="Sync" component={SyncData} />
+            {/* <Bottom.Screen name="Sync" component={SyncData} /> */}
             <Bottom.Screen name="History" component={History} />
             <Bottom.Screen name="Statistics" component={Stats} />
-            <Bottom.Screen name="Sleep Diary" component={SleepDiary} />
+            <Bottom.Screen name="Sleep Diary" component={SleepDiaryScreen} />
             <Bottom.Screen name="My Profile" component={Profile} />
 
         </Bottom.Navigator>
@@ -60,6 +61,7 @@ export default function App() {
                 headerShown: false
             }}>
                 <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Auth" component={Auth} />
                 <Stack.Screen name="Bottom" component={BottomTabs} />
             </Stack.Navigator>
 

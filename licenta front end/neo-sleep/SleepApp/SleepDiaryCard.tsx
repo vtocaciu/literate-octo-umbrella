@@ -6,38 +6,32 @@ import { useFonts } from "expo-font";
 import MyPieChart from "./MyPieChart";
 
 
-export default function SleepCard({ sleep, index }: any): JSX.Element {
+export default function SleepDiaryCard({ rating }: any): JSX.Element {
 
   let [fontsLoaded] = useFonts({
     'ModernSansLight': require('../assets/fonts/ModernSansLight.ttf'),
   });
 
 
-  
-
-  const data = [{ x: "", y: sleep.deepSleepTime },
-  { x: "", y: sleep.lightSleepDuration + sleep.REMDuration },
-  { x: "", y: sleep.wakeSleepTime }]
-
  
-  const randomNumber = Math.floor(Math.random() * 4);
+  
 
   return (
     !fontsLoaded ? <View><Text>Loading..</Text></View> : (
       <View style={styles.container} >
 
         <View>
-          <Text style={styles.dateStyle}>{formatDate(new Date(sleep.date))}</Text>
-          <Text style={styles.dateStyle}>{sleep.sleepScore.toFixed(2).toString()}</Text>
+          <Text style={styles.dateStyle}>12/03/2021</Text>
         </View>
         <View style={styles.circleContainer}>
-          <MyPieChart data={data} />
+          
         </View>
         <View style={styles.containerImage}>
-          {randomNumber == 0 ? <Image source={require('../Icons/sleep-0.png')} style={styles.imageStyle} /> :
-            randomNumber == 1 ? <Image source={require('../Icons/sleep-1.png')} style={styles.imageStyle} /> :
-              randomNumber == 2 ? <Image source={require('../Icons/sleep-2.png')} style={styles.imageStyle} /> :
-                <Image source={require('../Icons/sleep-3.png')} style={styles.imageStyle} />}
+          {rating == 1 ? <Image source={require('../Icons/bad.png')} style={styles.imageStyle} /> :
+            rating == 2 ? <Image source={require('../Icons/poor.png')} style={styles.imageStyle} /> :
+              rating == 3 ? <Image source={require('../Icons/normal.png')} style={styles.imageStyle} /> :
+                rating == 4 ? <Image source={require('../Icons/good.png')} style={styles.imageStyle} /> : 
+                <Image source={require('../Icons/best.png')} style={styles.imageStyle} />}
         </View>
       </View>
 
@@ -68,15 +62,15 @@ const styles = StyleSheet.create({
     top: -45
   },
   imageStyle: {
-    height: 44,
-    width: 44,
+    height: 80,
+    width: 80,
     resizeMode: 'contain',
     
   },
   containerImage: {
     position: 'absolute',
-    right: 30,
-    top: 30
+    right: 15,
+    top: 15
   },
   pillowImage: {
     position: 'absolute',

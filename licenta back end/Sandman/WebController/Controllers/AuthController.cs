@@ -2,6 +2,7 @@
 using Models;
 using Service;
 using ServiceInterfaces;
+using System;
 using System.Collections.Generic;
 using WebController.Helpers;
 
@@ -17,9 +18,17 @@ namespace WebController.Controllers
         }
 
         [HttpPost("auth/add")]
-        public void AddUser(User user)
+        public IActionResult AddUser(User user)
         {
-            _authController.AddUser(user);
+            try
+            {
+                _authController.AddUser(user);
+                return Ok(new { message = "User created succesfully! " });
+            }
+            catch(Exception ex)
+            {
+                return Ok(new { message = "User already exists!" });
+            }
         }
 
         [HttpPost("auth/login")]

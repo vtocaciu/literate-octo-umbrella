@@ -24,6 +24,10 @@ namespace Service
 
         public void AddUser(User user)
         {
+            var checkList = _userRepository.GetAll().FindAll(us => us.Username == user.Username || us.Email == user.Email);
+            if (checkList.Count > 0)
+                throw new Exception("User already exists!");
+
             user.ID = Guid.NewGuid();
             _userRepository.Add(user);
         }

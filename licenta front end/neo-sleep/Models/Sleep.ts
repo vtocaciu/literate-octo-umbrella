@@ -1,7 +1,3 @@
-import { TextInput, View, StyleSheet, Button, TouchableOpacity, Text, GestureResponderEvent, Image, Dimensions, PixelRatio } from "react-native";
-import React from 'react';
-
-//decorator pattern
 export class BaseSleep {
   ID: string;
   userID: string;

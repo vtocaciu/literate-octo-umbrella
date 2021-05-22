@@ -2,6 +2,32 @@ import jwtDecode from "jwt-decode";
 import { User } from "../Models/User";
 import { URL_APP } from "../utils/consts";
 
+export const auth = (username: string, password: string, email: string, dateOfBirth: Date, firstName: string, lastName: string) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${URL_APP}/auth/add`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: username, password: password, email: email, dateOfBirth: new Date(dateOfBirth), firstName: firstName, lastName: lastName })
+    }).then((data) =>
+      data.json()
+        .then(processedData => {
+          if (processedData.status === 400)
+            reject("User already exists!")
+          if (processedData.message === "User already exists!")
+            reject("User already exists!")
+          resolve(processedData);
+        })
+      .catch((error) => reject(error))
+    )
+      .catch((error) => reject("User already exists!"));
+  });
+
+}
+
+
 export const login = (username: string, password: string) => {
   return new Promise((resolve, reject) => {
     fetch(`${URL_APP}/auth/login`, {

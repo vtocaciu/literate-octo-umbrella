@@ -1,13 +1,11 @@
 import {View, StyleSheet, Text, ScrollView } from "react-native";
 import React from 'react';
-import { SleepService } from "../Services/SleepService";
+import { getSleepData } from "../Services/SleepService";
 import { getHeight, getWidth, normalizeFontSize } from "../utils/resizeUtils";
 import SleepCard from "./SleepCard";
 import { Sleep } from "../Models/Sleep";
 import { useIsFocused } from "@react-navigation/native";
 
-
-const sleepService: SleepService = SleepService.initSleepService();
 
 export default function History(): JSX.Element {
    
@@ -15,7 +13,8 @@ export default function History(): JSX.Element {
     const isFocused = useIsFocused();
 
     React.useEffect(() => {
-        sleepService.getSleepData().then((data) => { setSleepList(data); });
+        
+        getSleepData().then((data) => { setSleepList(data); });
     }, [isFocused])
     return (
         <ScrollView style={styles.container}>

@@ -1,4 +1,4 @@
-import { TextInput, View, StyleSheet, Button, TouchableOpacity, Text, GestureResponderEvent, Image, Dimensions, PixelRatio } from "react-native";
+import { TextInput, View, StyleSheet, Text, GestureResponderEvent, Image } from "react-native";
 import React from 'react';
 import MyButton from "../Controls/MyButton";
 import { useFonts } from "expo-font";
@@ -19,6 +19,13 @@ export default function Login({ navigation }: any): JSX.Element {
         'ModernSansLight': require('../assets/fonts/ModernSansLight.ttf'),
     });
 
+
+    const gotoAuth = (): void => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Auth' }]
+        })
+    }
 
     const onClick = (event: GestureResponderEvent): void => {
         /*navigation.reset({
@@ -78,7 +85,7 @@ export default function Login({ navigation }: any): JSX.Element {
                     <MyButton buttonStyle={styles.button} textStyle={styles.buttonText} text="login" onClick={onClick} />
                     : <Image source={require('../Icons/loading.gif')} style={styles.loadingImage} />
                 }
-                <Text style={styles.signUpStyle}>Don't have an account? {'\n'} Click here to sign up!</Text>
+                <Text style={styles.signUpStyle} onPress={gotoAuth}>Don't have an account? {'\n'} Click here to sign up!</Text>
 
 
             </View>
